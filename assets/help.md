@@ -1,0 +1,29 @@
+**Use reactions to translate a message.**
+Available translations:
+• 🇧🇬 Bulgarian (flag_bg)
+• 🇨🇿 Czech (flag_cz)
+• 🇩🇰 Danish (flag_dk)
+• 🇩🇪 German (flag_de)
+• 🇬🇷 Greek (flag_gr)
+• 🇬🇧 / 🇺🇸 English (flag_gb / flag_us)
+• 🇪🇸 Spanish (flag_es)
+• 🇪🇪 Estonian (flag_ee)
+• 🇳🇴 / 🇮🇸 Finnish (flag_no / flag_is)
+• 🇫🇷 French (flag_fr)
+• 🇭🇺 Hungarian (flag_hu)
+• 🇮🇹 Italian (flag_it)
+• 🇯🇵 Japanese (flag_jp)
+• 🇱🇹 Lithuanian (flag_lt)
+• 🇱🇻 Latvian (flag_lv)
+• 🇳🇱 Dutch (flag_nl)
+• 🇵🇱 Polish (flag_pl)
+• 🇵🇹 Portuguese (flag_pt)
+• 🇷🇴 Romanian (flag_ro)
+• 🇷🇺 Russian (flag_ru)
+• 🇸🇰 Slovak (flag_sk)
+• 🇸🇮 Slovenian (flag_si)
+• 🇸🇪 Swedish (flag_se)
+• 🇨🇳 Chinese (flag_cn)
+
+**API current usage:**
+Use `!usage` to know how much translations are still availables.
