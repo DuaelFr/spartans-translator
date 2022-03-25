@@ -1,0 +1,21 @@
+name: spartan-translator
+services:
+  redis:
+    type: redis
+    app_mount: false
+  appserver:
+    type: node:16
+    overrides:
+      environment:
+        TOKEN: '**OVERRIDE THIS LOCALLY**'
+        BOT_OWNER: '**OVERRIDE THIS LOCALLY**'
+        DEEPL_API_DOMAIN: 'api-free.deepl.com'
+        DEEPL_API_KEY: '**OVERRIDE THIS LOCALLY**'
+        REDIS_TLS_URL: 'redis://redis'
+    build:
+      - npm install
+tooling:
+  node:
+    service: appserver
+  npm:
+    service: appserver
