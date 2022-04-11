@@ -4,11 +4,16 @@ const serialize = require('serialize-javascript');
 const { promisify } = require("util");
 
 // Configure redis database.
-let redisClientOptions = {};
+let redisClientOptions = {
+  url: process.env.REDIS_TLS_URL
+};
 if (process.env.REDIS_TLS_URL.indexOf('rediss://') === 0) {
-  redisClientOptions.tls = { rejectUnauthorized: false };
+  redisClientOptions.socket = {
+    tls: true,
+    rejectUnauthorized: false
+  };
 }
-const redisClient = redis.createClient(process.env.REDIS_TLS_URL, redisClientOptions);
+const redisClient = redis.createClient(redisClientOptions);
 redisClient.on("error", function(error) {
   throw "Impossible de joindre la base de données.";
 });
