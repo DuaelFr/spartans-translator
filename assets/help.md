@@ -26,4 +26,4 @@ Available translations:
 • 🇨🇳 Chinese (flag_cn)
 
 **API current usage:**
-Use `!usage` to know how much translations are still availables.
+Use `$usage` to know how much translations are still availables.
