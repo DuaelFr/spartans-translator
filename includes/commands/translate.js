@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const config = require("../../config.json");
-const { sendError } = require("../helpers");
+const { sendError, configGet, configSet } = require("../helpers");
 const querystring = require("querystring");
 const https = require("https");
 
@@ -13,6 +13,14 @@ async function reaction(reaction, user) {
   // Handle unsupported languages.
   if (!config.langs[reaction.emoji.name]) {
     return sendError(reaction.message, `Unsupported language: ${reaction.emoji.name}`);
+  }
+
+  // Get translation from the cache.
+  const msgKey = `${reaction.message.id}:${config.langs[reaction.emoji.name]}`;
+  let translation = await configGet(reaction.message.guildId, msgKey, false);
+  if (translation) {
+    sendTranslation(user, reaction.message, reaction.emoji.name, translation);
+    return;
   }
 
   const data = querystring.stringify({
@@ -35,6 +43,8 @@ async function reaction(reaction, user) {
       const data = JSON.parse(body);
 
       sendTranslation(user, reaction.message, reaction.emoji.name, data.translations[0].text);
+      // Save translation to the cache.
+      configSet(reaction.message.guildId, msgKey, data.translations[0].text);
     });
   });
 }
