@@ -10,7 +10,7 @@ const redisOptions = process.env.REDIS_TLS_URL.includes("rediss://")
   ? {
     port: Number(redis_uri.port),
     host: redis_uri.hostname,
-    password: redis_uri.auth.split(":")[1],
+    password: redis_uri.password,
     db: 0,
     tls: {
       rejectUnauthorized: false,
