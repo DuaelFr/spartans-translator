@@ -17,10 +17,13 @@ async function reaction(reaction, user) {
 
   // Get translation from the cache.
   const msgKey = `${reaction.message.id}:${config.langs[reaction.emoji.name]}`;
+  const msgTime = reaction.message.editedTimestamp || reaction.message.createdTimestamp;
   let translation = await configGet(reaction.message.guildId, msgKey, false);
   if (translation) {
-    sendTranslation(user, reaction.message, reaction.emoji.name, translation);
-    return;
+    if (translation.timestamp === msgTime) {
+      sendTranslation(user, reaction.message, reaction.emoji.name, translation.content);
+      return;
+    }
   }
 
   const data = querystring.stringify({
@@ -44,7 +47,10 @@ async function reaction(reaction, user) {
 
       sendTranslation(user, reaction.message, reaction.emoji.name, data.translations[0].text);
       // Save translation to the cache.
-      configSet(reaction.message.guildId, msgKey, data.translations[0].text);
+      configSet(reaction.message.guildId, msgKey, {
+        content: data.translations[0].text,
+        timestamp: msgTime,
+      });
     });
   });
 }
