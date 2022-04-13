@@ -34,7 +34,7 @@ function handle(command, msg) {
       msg.channel.send({ embeds: [embed] });
     });
   }).on('error', error => {
-    sendError(msg, error);
+    sendError(msg.channel, error);
   });
 }
 

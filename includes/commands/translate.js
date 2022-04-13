@@ -12,7 +12,7 @@ async function reaction(reaction, user) {
 
   // Handle unsupported languages.
   if (!config.langs[reaction.emoji.name]) {
-    return sendError(reaction.message, `Unsupported language: ${reaction.emoji.name}`);
+    return sendError(user, `Unsupported language: ${reaction.emoji.name}`);
   }
 
   // Get translation from the cache.
