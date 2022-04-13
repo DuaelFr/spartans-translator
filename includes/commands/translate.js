@@ -1,8 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const config = require("../../config.json");
 const { sendError, configGet, configSet } = require("../helpers");
-const querystring = require("querystring");
-const https = require("https");
 
 async function reaction(reaction, user) {
   // For non-flag emojis.
@@ -26,33 +24,15 @@ async function reaction(reaction, user) {
     }
   }
 
-  const data = querystring.stringify({
-    target_lang: config.langs[reaction.emoji.name],
-    text: reaction.message.content
-  });
-
-  const options = {
-    hostname: process.env.DEEPL_API_DOMAIN,
-    path: `/v2/translate?${data}`,
-    headers: {
-      'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`
-    }
-  }
-
-  https.get(options, res => {
-    let body = '';
-    res.on('data', chunk => body += chunk);
-    res.on('end', e => {
-      const data = JSON.parse(body);
-
-      sendTranslation(user, reaction.message, reaction.emoji.name, data.translations[0].text);
+  require('../translators/deepl').translate(reaction.message.content, config.langs[reaction.emoji.name])
+    .then((translation) => {
+      sendTranslation(user, reaction.message, reaction.emoji.name, translation);
       // Save translation to the cache.
       configSet(reaction.message.guildId, msgKey, {
-        content: data.translations[0].text,
+        content: translation,
         timestamp: msgTime,
       });
     });
-  });
 }
 
 const sendTranslation = (user, message, language, translation) => {
