@@ -11,7 +11,7 @@ function handle(command, msg) {
       const embed = new MessageEmbed()
         .setTitle('Global help')
         .setDescription(data);
-      msg.channel.send({ embeds: [embed] });
+      msg.author.channel.send({ embeds: [embed] });
     });
 }
 
