@@ -11,8 +11,10 @@ Available translations:
 • 🇳🇴 / 🇮🇸 Finnish (flag_no / flag_is)
 • 🇫🇷 French (flag_fr)
 • 🇭🇺 Hungarian (flag_hu)
+• 🇮🇩 Indonesian (flag_id)
 • 🇮🇹 Italian (flag_it)
 • 🇯🇵 Japanese (flag_jp)
+• 🇰🇷 Korean (flag_kr)
 • 🇱🇹 Lithuanian (flag_lt)
 • 🇱🇻 Latvian (flag_lv)
 • 🇳🇱 Dutch (flag_nl)
@@ -23,6 +25,7 @@ Available translations:
 • 🇸🇰 Slovak (flag_sk)
 • 🇸🇮 Slovenian (flag_si)
 • 🇸🇪 Swedish (flag_se)
+• 🇻🇳 Vietnamese (flag_vn)
 • 🇨🇳 Chinese (flag_cn)
 
 **API current usage:**

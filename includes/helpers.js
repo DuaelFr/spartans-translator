@@ -3,6 +3,8 @@ const Redis = require("ioredis");
 const serialize = require('serialize-javascript');
 const { promisify } = require("util");
 const { URL } = require("url");
+const querystring = require("querystring");
+const https = require("https");
 
 // Configure redis database.
 const redis_uri = new URL(process.env.REDIS_TLS_URL);
@@ -80,4 +82,43 @@ const configSet = (guild, key, value) => {
     });
 }
 
-module.exports = { sendError, configGet, configSet };
+/**
+ * Detect the string language.
+ *
+ * @param content
+ * @returns {Promise<unknown>}
+ */
+async function dectectLanguage(content) {
+  const postData = querystring.stringify({
+    query: content
+  });
+
+  const options = {
+    hostname: 'openapi.naver.com',
+    port: 443,
+    path: `/v1/papago/detectLangs`,
+    method: 'POST',
+    headers: {
+      'X-Naver-Client-Id': process.env.PAPAGO_CLIENT_ID,
+      'X-Naver-Client-Secret': process.env.PAPAGO_CLIENT_SECRET,
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Content-Length': postData.length
+    }
+  }
+
+  return new Promise(resolve => {
+    const req = https.request(options, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', e => {
+        const data = JSON.parse(body);
+        resolve(data.langCode);
+      });
+    });
+    req.write(postData);
+    req.end();
+  });
+
+}
+
+module.exports = { sendError, configGet, configSet, dectectLanguage };

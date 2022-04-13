@@ -1,9 +1,10 @@
 const querystring = require("querystring");
 const https = require("https");
 
-async function translate(content, language) {
+async function translate(content, sourceLang, destinationLang) {
   const data = querystring.stringify({
-    target_lang: language,
+    source_lang: sourceLang.toUpperCase(),
+    target_lang: destinationLang.toUpperCase(),
     text: content
   });
 

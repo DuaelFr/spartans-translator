@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const config = require("../../config.json");
-const { sendError, configGet, configSet } = require("../helpers");
+const { sendError, configGet, configSet, dectectLanguage } = require("../helpers");
 
 async function reaction(reaction, user) {
   // For non-flag emojis.
@@ -24,15 +24,51 @@ async function reaction(reaction, user) {
     }
   }
 
-  require('../translators/deepl').translate(reaction.message.content, config.langs[reaction.emoji.name])
-    .then((translation) => {
-      sendTranslation(user, reaction.message, reaction.emoji.name, translation);
-      // Save translation to the cache.
-      configSet(reaction.message.guildId, msgKey, {
-        content: translation,
-        timestamp: msgTime,
+  const sourceLang = await dectectLanguage(reaction.message.content);
+  const destinationLang = config.langs[reaction.emoji.name];
+
+  let sourceTranslatorName = 'deepl';
+  let destinationTranslatorName = 'deepl';
+  for (let translatorName in config.translators) {
+    if (config.translators[translatorName].supportedLanguages.includes(sourceLang)) {
+      sourceTranslatorName = translatorName;
+    }
+    if (config.translators[translatorName].supportedLanguages.includes(destinationLang)) {
+      destinationTranslatorName = translatorName;
+    }
+  }
+
+  const sourceTranslator = require('../translators/' + sourceTranslatorName);
+  const destinationTranslator = require('../translators/' + destinationTranslatorName);
+  let sourceString = reaction.message.content;
+
+  // Use an english translation as intermediate.
+  if (sourceTranslatorName !== destinationTranslatorName) {
+    sourceTranslator.translate(sourceString, sourceLang, 'en')
+      .then((intermediate) => {
+        destinationTranslator.translate(intermediate, 'en', destinationLang)
+          .then((translation) => {
+            sendTranslation(user, reaction.message, reaction.emoji.name, translation);
+            // Save translation to the cache.
+            configSet(reaction.message.guildId, msgKey, {
+              content: translation,
+              timestamp: msgTime,
+            });
+          });
       });
-    });
+  }
+  // Direct translation.
+  else {
+    destinationTranslator.translate(sourceString, sourceLang, destinationLang)
+      .then((translation) => {
+        sendTranslation(user, reaction.message, reaction.emoji.name, translation);
+        // Save translation to the cache.
+        configSet(reaction.message.guildId, msgKey, {
+          content: translation,
+          timestamp: msgTime,
+        });
+      });
+  }
 }
 
 const sendTranslation = (user, message, language, translation) => {
