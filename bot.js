@@ -1,9 +1,6 @@
-const { Client, Intents, MessageEmbed} = require('discord.js');
+const { Client, Intents } = require('discord.js');
 const logger = require('winston');
-const https = require('https');
-const querystring = require('querystring');
 const config = require('./config.json');
-const { sendError } = require('./includes/helpers');
 
 // Configure logger settings.
 logger.remove(logger.transports.Console);
@@ -52,41 +49,7 @@ bot.on('messageCreate', msg => {
 
 // Handle reactions.
 bot.on('messageReactionAdd', (reaction, user) => {
-  // For non-flag emojis.
-  if (!reaction.emoji.name.match(/[🇦-🇿]{2}/u)) {
-    return;
-  }
-
-  // Handle unsupported languages.
-  if (!config.langs[reaction.emoji.name]) {
-    return sendError(reaction.message, `Unsupported language: ${reaction.emoji.name}`);
-  }
-
-  const data = querystring.stringify({
-    target_lang: config.langs[reaction.emoji.name],
-    text: reaction.message.content
-  });
-
-  const options = {
-    hostname: process.env.DEEPL_API_DOMAIN,
-    path: `/v2/translate?${data}`,
-    headers: {
-      'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`
-    }
-  }
-
-  https.get(options, res => {
-    let body = '';
-    res.on('data', chunk => body += chunk);
-    res.on('end', e => {
-      const data = JSON.parse(body);
-
-      const embed = new MessageEmbed()
-        .setTitle(`${reaction.emoji.name} Translation ${reaction.emoji.name}`)
-        .setDescription(data.translations[0].text);
-      reaction.message.channel.send({ embeds: [embed], reply: { messageReference: reaction.message.id } });
-    });
-  });
+  require("./includes/commands/translate").reaction(reaction, user);
 });
 
 bot.login(process.env.TOKEN);
