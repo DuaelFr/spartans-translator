@@ -30,12 +30,13 @@
         "🇸🇮": "sl",
         "🇸🇪": "sw",
         "🇹🇭": "th",
+        "🇹🇷": "tr",
         "🇻🇳": "vi",
         "🇨🇳": "zh"
     },
     "translators": {
         "deepl": {
-            "supportedLanguages": ["unk", "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hu", "it", "ja", "lt", "lv", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sw", "zh"]
+            "supportedLanguages": ["unk", "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hu", "id", "it", "ja", "lt", "lv", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sw", "tr", "zh"]
         },
         "papago": {
             "supportedLanguages": ["ko", "en", "ja", "zh-CN", "zh-TW", "vi", "id", "th", "de", "ru", "es", "it", "fr"]

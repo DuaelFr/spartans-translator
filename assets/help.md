@@ -25,6 +25,7 @@ Available translations:
 • 🇸🇰 Slovak (flag_sk)
 • 🇸🇮 Slovenian (flag_si)
 • 🇸🇪 Swedish (flag_se)
+• 🇹🇷 Turkish (flag_tr)
 • 🇻🇳 Vietnamese (flag_vn)
 • 🇨🇳 Chinese (flag_cn)
 
