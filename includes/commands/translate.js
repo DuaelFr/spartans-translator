@@ -29,7 +29,7 @@ async function reaction(reaction, user) {
 
   let sourceTranslatorName = 'deepl';
   let destinationTranslatorName = 'deepl';
-  for (let translatorName in config.translators) {
+  for (let translatorName in [].reverse(config.translators)) {
     if (config.translators[translatorName].supportedLanguages.includes(sourceLang)) {
       sourceTranslatorName = translatorName;
     }
