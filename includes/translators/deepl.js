@@ -3,7 +3,6 @@ const https = require("https");
 
 async function translate(content, sourceLang, destinationLang) {
   const data = querystring.stringify({
-    source_lang: sourceLang.toUpperCase(),
     target_lang: destinationLang.toUpperCase(),
     text: content
   });
